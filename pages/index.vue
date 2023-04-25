@@ -5,7 +5,7 @@
     </section>
 
     <section class="user-input mb-3">
-      <validation-observer ref="user-input-observer">
+      <validation-observer slim ref="user-input-observer">
         <b-form inline @submit.prevent="addTask" class="d-flex justify-content-center">
           <validation-provider
             v-slot="{ errors }"
@@ -18,7 +18,7 @@
               v-model="task.title"
               placeholder="Task title"
             />
-            {{ errors[0] }}
+            <FormErrorMessage v-if="errors[0]" :error="errors[0]"/>
           </validation-provider>
 
           <validation-provider
@@ -82,11 +82,9 @@ export default {
     this.showList = true;
   },
   methods: {
-    addTask() {
-      if (this.task.title.trim() === '' || this.task.dueDate === '') {
-        // TODO: show toast message
-        return
-      }
+    async addTask() {
+      const isValid = await this.$refs['user-input-observer'].validate();
+      if (!isValid) return;
 
       this.taskList.push({
         ...this.task,
@@ -102,3 +100,28 @@ export default {
   }
 }
 </script>
+
+<style>
+
+:root {
+  --light: #EEE;
+  --dark: #313154;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  --business-glow: 0px 0px 4px rgba(58, 130, 238, 0.75);
+  --personal-glow: 0px 0px 4px rgba(234, 64, 164, 0.75);
+}
+
+* {
+  font-family: 'montserrat', sans-serif;
+}
+
+body {
+  background: var(--light);
+  color: var(--dark);
+}
+
+input {
+  box-shadow: var(--shadow);
+}
+</style>

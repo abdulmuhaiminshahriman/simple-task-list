@@ -1,5 +1,5 @@
 <template>
-  <b-card no-body class="mb-2 p-0 border-0 card-min-width text-center">
+  <b-card no-body class="mb-2 p-0 border-0 card-min-width text-center bg-transparent">
     <b-table
       :current-page="currentPage"
       :fields="fields"
@@ -9,10 +9,10 @@
       borderless
       class="mb-0"
       empty-text="Please enter at least one task"
-      theah-class="d-none"
+      thead-class="d-none"
       responsive
+      small
       show-empty
-      hover
     >
       <template #cell(taskTitle)="rowData">
         <b-card class="card-hover">
@@ -20,25 +20,24 @@
             <b-col cols="auto">
               <span class="cursor-pointer btn-status-task" @click="() => { rowData.item.done = !rowData.item.done }">
                 <span v-if="rowData.item.done">
-                  <i class='bx bx-check-circle done-task'/>
+                  <i class='bx bx-check-circle done-task hover-bigger'/>
                 </span>
                 <span v-else>
-                  <i class='bx bx-circle undone-task'/>
+                  <i class='bx bx-circle undone-task hover-bigger'/>
                 </span>
               </span>
             </b-col>
 
             <b-col>
-              <span>
+              <p class="mb-0 pb-0">
                 <b :class="{ 'strikethrough': rowData.item.done }">{{ rowData.item.title }}</b>
-                <br>
-                <small>{{ rowData.item.dueDate }}</small>
-              </span>
+              </p>
+              <small>{{ rowData.item.dueDate }}</small>
             </b-col>
 
             <b-col cols="auto">
               <span class="cursor-pointer" @click="deleteTask(rowData.item)">
-                <i class='bx bx-trash remove-task'/>
+                <i class='bx bx-trash remove-task hover-bigger'/>
               </span>
             </b-col>
           </b-row>
@@ -76,7 +75,7 @@ export default {
       perPage: 5,
       fields: [
         // { key: 'done', label: '', thStyle: { width: '10%'}, tdClass: 'text-center align-middle' },
-        { key: 'taskTitle', label: '', tdClass: 'text-left align-middle' },
+        { key: 'taskTitle', label: '', tdClass: 'text-left align-middle text-nowrap' },
         // { key: 'action', label: '', thStyle: { width: '10%'}, tdClass: 'text-center align-middle' }
       ],
     }
@@ -109,16 +108,23 @@ export default {
 .undone-task {
   color: orange;
   font-size: 2em;
+  transition: transform 1s ease-out;
 }
 
 .done-task {
-  color: green;
+  color: #28a745;
   font-size: 2em;
+  transition: transform 1s ease-out;
+}
+
+.hover-bigger:hover {
+  transform: scale(1.1);
 }
 
 .remove-task {
   color: red;
   font-size: 1.5em;
+  transition: transform 1s ease-out;
 }
 
 .strikethrough {
