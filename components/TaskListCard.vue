@@ -137,6 +137,12 @@ export default {
   cursor: pointer;
 }
 
+@media screen and (max-width: 767px) {
+  .card-min-width {
+    min-width: 100%;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .card-min-width {
     min-width: 80%;

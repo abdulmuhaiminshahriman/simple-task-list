@@ -6,38 +6,47 @@
 
     <section class="user-input mb-3">
       <validation-observer slim ref="user-input-observer">
-        <b-form inline @submit.prevent="addTask" class="d-flex justify-content-center">
-          <validation-provider
-            v-slot="{ errors }"
-            rules="required"
-            vid="task-title"
-          >
-            <b-form-input
-              class="mb-3 mr-sm-3 mb-sm-0"
-              :state="errors.length > 0 ? false : null"
-              v-model="task.title"
-              placeholder="Task title"
-            />
-            <FormErrorMessage v-if="errors[0]" :error="errors[0]"/>
-          </validation-provider>
+        <b-form-row inline @submit.prevent="addTask" class="d-flex justify-content-center">
+          <b-col md="4">
+            <validation-provider
+              v-slot="{ errors }"
+              rules="required"
+              vid="task-title"
+            >
+              <b-form-input
+                class="mb-3 mr-sm-3 mb-sm-0"
+                :state="errors.length > 0 ? false : null"
+                v-model="task.title"
+                placeholder="Task title"
+              />
+              <FormErrorMessage v-if="errors[0]" :error="errors[0]"/>
+            </validation-provider>
+          </b-col>
 
-          <validation-provider
-            v-slot="{ errors }"
-            rules="required"
-            vid="task-dueDate"
-          >
-            <b-form-datepicker class="mb-3 mr-sm-3 mb-sm-0" v-model="task.dueDate"/>
-            {{ errors[0] }}
-          </validation-provider>
+          <b-col md="4">
+            <validation-provider
+              v-slot="{ errors }"
+              rules="required"
+              vid="task-dueDate"
+            >
+              <b-form-datepicker
+                class="mb-3 mr-sm-3 mb-sm-0"
+                v-model="task.dueDate"
+                :state="errors.length > 0 ? false : null"
+              />
+              <FormErrorMessage v-if="errors[0]" :error="errors[0]"/>
+            </validation-provider>
+          </b-col>
 
-          <b-button
-            type="submit"
-            variant="primary"
-            v-b-tooltip.hover title="Fill up required fields first"
-          >
-            <i class='bx bx-plus'/>
-          </b-button>
-        </b-form>
+          <b-col md="auto" class="text-right">
+            <b-button
+              type="submit"
+              variant="primary"
+            >
+              <i class='bx bx-plus'/>
+            </b-button>
+          </b-col>
+        </b-form-row>
       </validation-observer>
     </section>
 
