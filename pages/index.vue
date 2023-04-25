@@ -5,17 +5,40 @@
     </section>
 
     <section class="user-input mb-3">
-      <b-form inline @submit.prevent="addTask" class="d-flex justify-content-center">
-        <b-form-input
-          class="mb-3 mr-sm-3 mb-sm-0"
-          v-model="task.title"
-          placeholder="Task title"
-        />
+      <validation-observer ref="user-input-observer">
+        <b-form inline @submit.prevent="addTask" class="d-flex justify-content-center">
+          <validation-provider
+            v-slot="{ errors }"
+            rules="required"
+            vid="task-title"
+          >
+            <b-form-input
+              class="mb-3 mr-sm-3 mb-sm-0"
+              :state="errors.length > 0 ? false : null"
+              v-model="task.title"
+              placeholder="Task title"
+            />
+            {{ errors[0] }}
+          </validation-provider>
 
-        <b-form-datepicker class="mb-3 mr-sm-3 mb-sm-0" v-model="task.dueDate" />
+          <validation-provider
+            v-slot="{ errors }"
+            rules="required"
+            vid="task-dueDate"
+          >
+            <b-form-datepicker class="mb-3 mr-sm-3 mb-sm-0" v-model="task.dueDate"/>
+            {{ errors[0] }}
+          </validation-provider>
 
-        <b-button type="submit" variant="primary">Add</b-button>
-      </b-form>
+          <b-button
+            type="submit"
+            variant="primary"
+            v-b-tooltip.hover title="Fill up required fields first"
+          >
+            <i class='bx bx-plus'/>
+          </b-button>
+        </b-form>
+      </validation-observer>
     </section>
 
     <section class="task-list-card d-flex justify-content-center">
@@ -29,10 +52,13 @@
 </template>
 
 <script>
+import { required } from '../utils/validators';
+
 export default {
   name: 'TaskListPage',
   data() {
     return {
+      required,
       showList: false,
       task: {
         title: '',
