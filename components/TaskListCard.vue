@@ -1,27 +1,27 @@
 <template>
-  <b-card class="mb-2 p-0">
+  <b-card no-body class="mb-2 p-0 card-min-width text-center">
     <b-table
-      hover
-      borderless
+      :current-page="currentPage"
       :fields="fields"
       :items="taskList"
       :per-page="perPage"
-      :current-page="currentPage"
-      show-empty
+      :total-rows="rows"
+      borderless
+      class="mb-0"
+      empty-text="Please enter at least one task"
+      hover
       responsive
-      outlined
+      show-empty
     >
       <!-- Column: Task Status -->
       <template #cell(done)="rowData">
-        <div v-if="rowData.item.done">
-          <b-button class="btn-status-task" @click="() => { rowData.item.done = !rowData.item.done }">
+        <div class="cursor-pointer btn-status-task" @click="() => { rowData.item.done = !rowData.item.done }">
+          <span v-if="rowData.item.done">
             <i class='bx bx-check-circle done-task'/>
-          </b-button>
-        </div>
-        <div v-else>
-          <b-button class="btn-status-task" @click="() => { rowData.item.done = !rowData.item.done }">
+          </span>
+          <span v-else>
             <i class='bx bx-circle undone-task'/>
-          </b-button>
+          </span>
         </div>
       </template>
 
@@ -34,18 +34,23 @@
 
       <!-- Column: Delete Action -->
       <template #cell(action)="rowData">
-        <b-button size="sm" @click="deleteTask(rowData.item)">Delete</b-button>
+        <span class="cursor-pointer" @click="deleteTask(rowData.item)">
+          <i class='bx bx-trash remove-task' />
+        </span>
       </template>
     </b-table>
 
     <b-pagination
       v-model="currentPage"
-      :total-rows="rows"
       :per-page="perPage"
-      align="fill"
-      size="sm"
-      class="my-0"
-    ></b-pagination>
+      :total-rows="rows"
+      align="center"
+      class="my-3"
+      first-number
+      last-number
+      limit="3"
+      pills
+    />
   </b-card>
 </template>
 
@@ -61,13 +66,17 @@ export default {
   data() {
     return {
       currentPage: 1,
-      rows: 0,
       perPage: 5,
       fields: [
-        { key: 'done', label: '' },
-        { key: 'taskTitle', label: '' },
-        { key: 'action', label: '', thStyle: { width: '10%'} }
+        { key: 'done', label: '', thStyle: { width: '10%'}, tdClass: 'text-center align-middle' },
+        { key: 'taskTitle', label: '', tdClass: 'text-left align-middle' },
+        { key: 'action', label: '', thStyle: { width: '10%'}, tdClass: 'text-center align-middle' }
       ],
+    }
+  },
+  computed: {
+    rows() {
+      return this.taskList.length;
     }
   },
   methods: {
@@ -87,13 +96,6 @@ export default {
   border: none;
 }
 
-.btn-status-task.btn:focus,
-.btn-status-task.btn:active:focus,
-.btn-status-task.btn-secondary:focus,
-.btn-status-task.btn-secondary:active:focus {
-  box-shadow: none;
-}
-
 .undone-task {
   color: orange;
   font-size: 2em;
@@ -104,10 +106,25 @@ export default {
   font-size: 2em;
 }
 
+.remove-task {
+  color: red;
+  font-size: 1.5em;
+}
+
 .strikethrough {
   text-decoration: line-through;
   color: grey;
   font-style: italic;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .card-min-width {
+    min-width: 80%;
+  }
 }
 
 </style>
