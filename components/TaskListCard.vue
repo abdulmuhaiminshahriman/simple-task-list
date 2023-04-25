@@ -16,16 +16,20 @@
       <!-- Column: Task Status -->
       <template #cell(done)="rowData">
         <div v-if="rowData.item.done">
-          yes it's done
+          <b-button class="btn-status-task" @click="() => { rowData.item.done = !rowData.item.done }">
+            <i class='bx bx-check-circle done-task'/>
+          </b-button>
         </div>
         <div v-else>
-          noope, undone
+          <b-button class="btn-status-task" @click="() => { rowData.item.done = !rowData.item.done }">
+            <i class='bx bx-circle undone-task'/>
+          </b-button>
         </div>
       </template>
 
       <!-- Column: Task Title -->
       <template #cell(taskTitle)="rowData">
-        <b>{{ rowData.item.title }}</b>
+        <b :class="{ 'strikethrough': rowData.item.done }">{{ rowData.item.title }}</b>
         <br>
         <small>{{ rowData.item.dueDate }}</small>
       </template>
@@ -71,11 +75,41 @@ export default {
   methods: {
     deleteTask(task) {
       this.$emit('deleteTask', task);
+    },
+    onChangeStatus() {
+      console.log('on change status')
     }
   }
 }
 </script>
 
 <style scoped>
+.btn-status-task {
+  background: transparent;
+  border: none;
+}
+
+.btn-status-task.btn:focus,
+.btn-status-task.btn:active:focus,
+.btn-status-task.btn-secondary:focus,
+.btn-status-task.btn-secondary:active:focus {
+  box-shadow: none;
+}
+
+.undone-task {
+  color: yellow;
+  font-size: 2em;
+}
+
+.done-task {
+  color: green;
+  font-size: 2em;
+}
+
+.strikethrough {
+  text-decoration: line-through;
+  color: grey;
+  font-style: italic;
+}
 
 </style>
