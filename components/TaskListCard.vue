@@ -1,5 +1,5 @@
 <template>
-  <b-card no-body class="mb-2 p-0 card-min-width text-center">
+  <b-card no-body class="mb-2 p-0 border-0 card-min-width text-center">
     <b-table
       :current-page="currentPage"
       :fields="fields"
@@ -9,38 +9,45 @@
       borderless
       class="mb-0"
       empty-text="Please enter at least one task"
-      hover
+      theah-class="d-none"
       responsive
       show-empty
+      hover
     >
-      <!-- Column: Task Status -->
-      <template #cell(done)="rowData">
-        <div class="cursor-pointer btn-status-task" @click="() => { rowData.item.done = !rowData.item.done }">
-          <span v-if="rowData.item.done">
-            <i class='bx bx-check-circle done-task'/>
-          </span>
-          <span v-else>
-            <i class='bx bx-circle undone-task'/>
-          </span>
-        </div>
-      </template>
-
-      <!-- Column: Task Title -->
       <template #cell(taskTitle)="rowData">
-        <b :class="{ 'strikethrough': rowData.item.done }">{{ rowData.item.title }}</b>
-        <br>
-        <small>{{ rowData.item.dueDate }}</small>
-      </template>
+        <b-card class="card-hover">
+          <b-row align-v="center">
+            <b-col cols="auto">
+              <span class="cursor-pointer btn-status-task" @click="() => { rowData.item.done = !rowData.item.done }">
+                <span v-if="rowData.item.done">
+                  <i class='bx bx-check-circle done-task'/>
+                </span>
+                <span v-else>
+                  <i class='bx bx-circle undone-task'/>
+                </span>
+              </span>
+            </b-col>
 
-      <!-- Column: Delete Action -->
-      <template #cell(action)="rowData">
-        <span class="cursor-pointer" @click="deleteTask(rowData.item)">
-          <i class='bx bx-trash remove-task' />
-        </span>
+            <b-col>
+              <span>
+                <b :class="{ 'strikethrough': rowData.item.done }">{{ rowData.item.title }}</b>
+                <br>
+                <small>{{ rowData.item.dueDate }}</small>
+              </span>
+            </b-col>
+
+            <b-col cols="auto">
+              <span class="cursor-pointer" @click="deleteTask(rowData.item)">
+                <i class='bx bx-trash remove-task'/>
+              </span>
+            </b-col>
+          </b-row>
+        </b-card>
       </template>
     </b-table>
 
     <b-pagination
+      v-if="taskList.length > 5"
       v-model="currentPage"
       :per-page="perPage"
       :total-rows="rows"
@@ -68,9 +75,9 @@ export default {
       currentPage: 1,
       perPage: 5,
       fields: [
-        { key: 'done', label: '', thStyle: { width: '10%'}, tdClass: 'text-center align-middle' },
+        // { key: 'done', label: '', thStyle: { width: '10%'}, tdClass: 'text-center align-middle' },
         { key: 'taskTitle', label: '', tdClass: 'text-left align-middle' },
-        { key: 'action', label: '', thStyle: { width: '10%'}, tdClass: 'text-center align-middle' }
+        // { key: 'action', label: '', thStyle: { width: '10%'}, tdClass: 'text-center align-middle' }
       ],
     }
   },
@@ -91,6 +98,9 @@ export default {
 </script>
 
 <style scoped>
+.card-hover:hover {
+  box-shadow: green;
+}
 .btn-status-task {
   background: transparent;
   border: none;

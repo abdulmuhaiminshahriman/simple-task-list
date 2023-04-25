@@ -4,7 +4,7 @@
       <h4>TaskList Demo</h4>
     </section>
 
-    <section class="user-input mb-5">
+    <section class="user-input mb-3">
       <b-form inline @submit.prevent="addTask" class="d-flex justify-content-center">
         <b-form-input
           class="mb-3 mr-sm-3 mb-sm-0"
