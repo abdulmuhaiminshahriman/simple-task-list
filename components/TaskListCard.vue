@@ -7,10 +7,8 @@
       :items="taskList"
       :per-page="perPage"
       :current-page="currentPage"
-      small
       show-empty
       responsive
-      striped
       outlined
     >
       <!-- Column: Task Status -->
@@ -97,7 +95,7 @@ export default {
 }
 
 .undone-task {
-  color: yellow;
+  color: orange;
   font-size: 2em;
 }
 
