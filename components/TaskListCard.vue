@@ -2,6 +2,7 @@
   <b-card no-body class="mb-2 p-0 border-0 card-min-width text-center bg-transparent">
     <b-table
       :current-page="currentPage"
+      :sort-by="'taskTitle'"
       :fields="fields"
       :items="taskList"
       :per-page="perPage"
@@ -74,9 +75,7 @@ export default {
       currentPage: 1,
       perPage: 5,
       fields: [
-        // { key: 'done', label: '', thStyle: { width: '10%'}, tdClass: 'text-center align-middle' },
         { key: 'taskTitle', label: '', tdClass: 'text-left align-middle text-nowrap' },
-        // { key: 'action', label: '', thStyle: { width: '10%'}, tdClass: 'text-center align-middle' }
       ],
     }
   },
@@ -89,9 +88,6 @@ export default {
     deleteTask(task) {
       this.$emit('deleteTask', task);
     },
-    onChangeStatus() {
-      console.log('on change status')
-    }
   }
 }
 </script>
@@ -100,6 +96,7 @@ export default {
 .card-hover:hover {
   box-shadow: green;
 }
+
 .btn-status-task {
   background: transparent;
   border: none;

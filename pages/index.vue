@@ -4,9 +4,9 @@
       <h4>TaskList Demo</h4>
     </section>
 
-    <section class="user-input mb-3">
+    <section class="user-input mb-5">
       <validation-observer slim ref="user-input-observer">
-        <b-form-row inline @submit.prevent="addTask" class="d-flex justify-content-center">
+        <b-form-row inline class="d-flex justify-content-center">
           <b-col md="4">
             <validation-provider
               v-slot="{ errors }"
@@ -14,12 +14,13 @@
               vid="task-title"
             >
               <b-form-input
-                class="mb-3 mr-sm-3 mb-sm-0"
+                class="mr-sm-3 mb-sm-0"
+                :class="[ errors[0] ? 'mb-0' : 'mb-3' ]"
                 :state="errors.length > 0 ? false : null"
                 v-model="task.title"
                 placeholder="Task title"
               />
-              <FormErrorMessage v-if="errors[0]" :error="errors[0]"/>
+              <FormErrorMessage class="mb-2" v-if="errors[0]" :error="errors[0]"/>
             </validation-provider>
           </b-col>
 
@@ -30,19 +31,17 @@
               vid="task-dueDate"
             >
               <b-form-datepicker
-                class="mb-3 mr-sm-3 mb-sm-0"
+                class="mr-sm-3 mb-sm-0"
+                :class="[ errors[0] ? 'mb-0' : 'mb-3' ]"
                 v-model="task.dueDate"
                 :state="errors.length > 0 ? false : null"
               />
-              <FormErrorMessage v-if="errors[0]" :error="errors[0]"/>
+              <FormErrorMessage class="mb-2" v-if="errors[0]" :error="errors[0]"/>
             </validation-provider>
           </b-col>
 
           <b-col md="auto" class="text-right">
-            <b-button
-              type="submit"
-              variant="primary"
-            >
+            <b-button @click="addTask" variant="primary">
               <i class='bx bx-plus'/>
             </b-button>
           </b-col>
@@ -82,7 +81,9 @@ export default {
     taskList: {
       deep: true,
       handler(newVal) {
-        localStorage.setItem('taskList', JSON.stringify(newVal));
+        const sorted = this.sort(newVal);
+        localStorage.setItem('taskList', JSON.stringify(sorted));
+        // this.taskList = JSON.parse(localStorage.getItem('taskList')) || [];
       }
     }
   },
@@ -100,12 +101,20 @@ export default {
         createdAt: new Date().getTime()
       })
 
+      this.taskList = this.sort(this.taskList);
+
       this.task.title = '';
       this.task.dueDate = '';
+
+      // reset form validation
+      this.$refs['user-input-observer'].reset();
     },
     deleteTask(task) {
       this.taskList = this.taskList.filter(t => t.createdAt !== task.createdAt);
-    }
+    },
+    sort(taskList) {
+      return [...taskList].sort((a, b) => b.createdAt - a.createdAt);
+    },
   }
 }
 </script>
