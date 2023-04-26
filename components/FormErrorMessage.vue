@@ -1,5 +1,5 @@
 <template>
-  <small class="d-block form-error-message">{{ error }}</small>
+  <small class="d-block form-error-message text-danger">{{ error }}</small>
 </template>
 <script>
 export default {
