@@ -1,11 +1,11 @@
 <template>
   <b-container fluid="md">
     <section class="title my-5 text-center">
-      <h4>TaskList Demo</h4>
+      <h3>Task List Demo</h3>
     </section>
 
     <section class="user-input mb-5">
-      <validation-observer slim ref="user-input-observer">
+      <validation-observer ref="user-input-observer" slim>
         <b-form-row inline class="d-flex justify-content-center">
           <b-col md="4">
             <validation-provider
@@ -14,13 +14,13 @@
               vid="task-title"
             >
               <b-form-input
-                class="mr-sm-3 mb-sm-0"
+                v-model="task.title"
                 :class="[ errors[0] ? 'mb-0' : 'mb-3' ]"
                 :state="errors.length > 0 ? false : null"
-                v-model="task.title"
+                class="mr-sm-3 mb-sm-0"
                 placeholder="Task title"
               />
-              <FormErrorMessage class="mb-2" v-if="errors[0]" :error="errors[0]"/>
+              <FormErrorMessage v-if="errors[0]" :error="errors[0]" class="mb-2"/>
             </validation-provider>
           </b-col>
 
@@ -31,18 +31,19 @@
               vid="task-dueDate"
             >
               <b-form-datepicker
-                class="mr-sm-3 mb-sm-0"
-                :class="[ errors[0] ? 'mb-0' : 'mb-3' ]"
                 v-model="task.dueDate"
+                :class="[ errors[0] ? 'mb-0' : 'mb-3' ]"
                 :state="errors.length > 0 ? false : null"
+                class="mr-sm-3 mb-sm-0"
+                placeholder="Choose a due date"
               />
-              <FormErrorMessage class="mb-2" v-if="errors[0]" :error="errors[0]"/>
+              <FormErrorMessage v-if="errors[0]" :error="errors[0]" class="mb-2"/>
             </validation-provider>
           </b-col>
 
           <b-col md="auto" class="text-right">
-            <b-button @click="addTask" variant="primary">
-              <i class='bx bx-plus'/>
+            <b-button variant="info" @click="addTask">
+              <i class='bx bx-plus' />
             </b-button>
           </b-col>
         </b-form-row>
