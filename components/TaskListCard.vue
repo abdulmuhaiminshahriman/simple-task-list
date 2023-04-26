@@ -17,31 +17,27 @@
     >
       <template #cell(taskTitle)="rowData">
         <b-card class="card-hover">
-          <b-row align-v="center">
-            <b-col cols="auto">
-              <span class="cursor-pointer btn-status-task" @click="() => { rowData.item.done = !rowData.item.done }">
+          <div class="d-flex flex-row justify-content-between w-100">
+            <div class="d-flex align-items-center cursor-pointer btn-status-task mr-4" @click="() => { rowData.item.done = !rowData.item.done }">
                 <span v-if="rowData.item.done">
                   <i class='bx bx-check-circle done-task hover-bigger'/>
                 </span>
                 <span v-else>
                   <i class='bx bx-circle undone-task hover-bigger'/>
                 </span>
-              </span>
-            </b-col>
+              </div>
 
-            <b-col>
-              <p class="mb-0 pb-0">
-                <b :class="{ 'strikethrough': rowData.item.done }">{{ rowData.item.title }}</b>
-              </p>
+            <div class="d-flex flex-column flex-wrap mr-auto">
+              <span class="m-0 p-0 font-weight-bold" :class="{ 'strikethrough': rowData.item.done }">
+                {{ rowData.item.title }}
+              </span>
               <small>{{ rowData.item.dueDate }}</small>
-            </b-col>
+            </div>
 
-            <b-col cols="auto">
-              <span class="cursor-pointer" @click="deleteTask(rowData.item)">
-                <i class='bx bx-trash remove-task hover-bigger'/>
-              </span>
-            </b-col>
-          </b-row>
+            <div class="d-flex align-items-center cursor-pointer ml-4" @click="deleteTask(rowData.item)">
+              <i class='bx bx-trash remove-task hover-bigger'/>
+            </div>
+          </div>
         </b-card>
       </template>
     </b-table>
@@ -74,9 +70,7 @@ export default {
     return {
       currentPage: 1,
       perPage: 5,
-      fields: [
-        { key: 'taskTitle', label: '', tdClass: 'text-left align-middle text-nowrap' },
-      ],
+      fields: [{ key: 'taskTitle', label: '', tdClass: 'text-left align-middle text-wrap' }],
     }
   },
   computed: {
@@ -93,10 +87,6 @@ export default {
 </script>
 
 <style scoped>
-.card-hover:hover {
-  box-shadow: green;
-}
-
 .btn-status-task {
   background: transparent;
   border: none;
@@ -115,7 +105,7 @@ export default {
 }
 
 .hover-bigger:hover {
-  transform: scale(1.1);
+  transform: scale(1.2);
 }
 
 .remove-task {
