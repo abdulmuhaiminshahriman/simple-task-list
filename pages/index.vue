@@ -83,7 +83,6 @@ export default {
       handler(newVal) {
         const sorted = this.sort(newVal);
         localStorage.setItem('taskList', JSON.stringify(sorted));
-        // this.taskList = JSON.parse(localStorage.getItem('taskList')) || [];
       }
     }
   },
@@ -124,14 +123,6 @@ export default {
 :root {
   --light: #EEE;
   --dark: #313154;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-
-  --business-glow: 0px 0px 4px rgba(58, 130, 238, 0.75);
-  --personal-glow: 0px 0px 4px rgba(234, 64, 164, 0.75);
-}
-
-* {
-  font-family: 'montserrat', sans-serif;
 }
 
 body {
@@ -139,7 +130,4 @@ body {
   color: var(--dark);
 }
 
-input {
-  box-shadow: var(--shadow);
-}
 </style>
