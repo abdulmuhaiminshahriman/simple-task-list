@@ -81,6 +81,9 @@ export default {
   methods: {
     deleteTask(task) {
       this.$emit('deleteTask', task);
+      this.$nextTick(() => {
+        this.currentPage = Math.ceil(this.rows / this.perPage);
+      });
     },
   }
 }
